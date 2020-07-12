@@ -1,0 +1,77 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: php-pvc
+  labels:
+    env: test
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: php-log-pvc
+  labels:
+    env: test
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: php-svc
+  labels:
+    name: php-svc
+spec:
+  selector:
+    name: php-pod
+  ports:
+  - port: 80
+    targetPort: 80
+    nodePort: 32769
+  type: NodePort
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: php-app
+  labels:
+    name: php-app
+    env: test
+spec:
+  replicas: 1
+  selector:
+    matchExpressions:
+    - { key: name, operator: In , values: [ php-pod ] }
+  template:
+    metadata:
+      name: php-pod
+      labels:
+        name: php-pod
+    spec:
+      containers:
+      - name: php-con
+        image: aroraabhisek/php:v1
+        volumeMounts:
+        - name: phplogs
+          mountPath: /var/log/httpd/
+        - name: phpdir
+          mountPath: /var/www/php/
+      volumes:
+      - name: phplogs
+        persistentVolumeClaim:
+          claimName: php-log-pvc
+      - name: phpdir
+        persistentVolumeClaim:
+          claimName: php-pvc
