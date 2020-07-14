@@ -3,7 +3,7 @@
 
 <?php
 
-echo "welcome to abhi web server for testing";
+echo "welcome to abhi web server for testing
 
 
 echo `ifconfig`;
