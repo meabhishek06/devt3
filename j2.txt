@@ -1,5 +1,5 @@
 sudo scp /var/jenkins_home/* root@192.168.99.106:/devt3
-if sudo ssh root@192.168.99.106 ls | grep *.html
+if sudo ls  /var/jenkins_home/ | grep .html
 	then
 	if sudo ssh root@192.168.99.106 kubectl get deploy | grep html
 		then
@@ -7,7 +7,8 @@ if sudo ssh root@192.168.99.106 ls | grep *.html
 		else
 		sudo ssh root@192.168.99.106 kubectl create -f /devt3/html.yml
 	fi
-elif sudo ssh root@192.168.99.106 ls | grep *.php
+fi
+if sudo ls  /var/jenkins_home/ | grep .php
 	then
 	if sudo ssh root@192.168.99.106 kubectl get deploy | grep php
 		then
@@ -15,8 +16,10 @@ elif sudo ssh root@192.168.99.106 ls | grep *.php
 		else
 		sudo ssh root@192.168.99.106 kubectl create -f /devt3/php.yml
 	fi
-else 
-	echo "all ok"
+
+
+#else 
+#	echo "all ok"
 fi
 #sudo ssh root@192.168.99.106 kubectl cp /devt3/index.html html-app-76744d58b7-*:/var/www/html
 #else
