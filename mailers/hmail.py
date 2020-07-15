@@ -6,7 +6,7 @@ def mailer():
     sender_email = "abhiccv1998@gmail.com"
     receiver_email = "abhiccv1998@gmail.com"
     # password = getpass.getpass()
-    password = "houseofdead"
+    password = "******"
 
     message = MIMEMultipart("alternative")
     message["Subject"] = "HTTP code has some error"
